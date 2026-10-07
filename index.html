@@ -50,6 +50,7 @@ h2{font-size:30px;font-weight:500;letter-spacing:-.01em;margin-bottom:30px}
 .card .sub{font-size:13px;color:var(--mut);margin-bottom:6px}
 .card p.pr{font-size:15px;margin-bottom:10px}
 .badge{position:absolute;top:10px;right:10px;background:#fff;font-size:12px;padding:5px 11px;border-radius:20px;z-index:2}
+.opt{display:flex;gap:6px;margin-bottom:10px}.opt span{font-size:11px;color:var(--mut);align-self:center;margin-right:2px}.opt button{flex:1;padding:6px 0;border:1px solid var(--line);background:#fff;border-radius:16px;font:inherit;font-size:12px;cursor:pointer;color:#444;display:flex;align-items:center;justify-content:center;gap:5px}.opt button i{width:9px;height:9px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.15)}.opt button.on{border-color:var(--fg);color:var(--fg)}.opt .g i{background:linear-gradient(135deg,#f3d27a,#c9972b)}.opt .s i{background:linear-gradient(135deg,#f2f2f2,#9a9a9a)}.li .v{font-size:12px;color:var(--mut);margin:-4px 0 6px}
 .add{width:100%;padding:10px;border:1px solid var(--fg);background:#fff;border-radius:22px;font:inherit;font-size:13px;cursor:pointer}
 .add:hover:not(:disabled){background:var(--fg);color:#fff}
 .add:disabled{opacity:.4;cursor:default}
@@ -132,6 +133,7 @@ input:user-invalid{border-color:#c0392b}
   .burger{display:block}
   .hero .txt{padding-bottom:40px}
   .sum{position:static}
+  .opt span{display:none}.opt{gap:4px}.opt button{font-size:11px;padding:6px 2px}
 }
 @media(prefers-reduced-motion:reduce){.hero video{display:none}}
 </style>
@@ -332,6 +334,7 @@ const T = {
   "hero.h":"Ein Knoten.<br>Jeden Tag.","hero.p":"Handgeknotete 550 Paracord Armbänder. Leicht, wasserfest, verstellbar. Gemacht, um nie wieder abgelegt zu werden.",
   "cta.shop":"Jetzt shoppen","col.core":"Core Kollektion","col.pattern":"Pattern Kollektion","p.sub":"550 Paracord Armband",
   "p.add":"In den Warenkorb","p.sold":"Ausverkauft","p.added":"Im Warenkorb",
+  "b.l":"Perlen","b.none":"Ohne","b.gold":"Gold","b.silver":"Silber","bt.gold":"Goldperlen","bt.silver":"Silberperlen",
   "crew.k":"FÜR DIE CREW","crew.q":"„Wir wollten ein Armband, das zu allem passt und das man einfach dranlässt. Unter der Dusche, im Club, am Rhein, in Saint-Tropez.“",
   "faq.h":"Häufige Fragen",
   "faq":[["Darf das Armband ins Wasser?","Ja. 550 Paracord ist aus Nylon, verträgt Salz- und Süßwasser und trocknet schnell. Einfach anlassen."],["Wie reinige ich es?","Mit lauwarmem Wasser und etwas Seife durchkneten, dann an der Luft trocknen lassen. Keine Waschmaschine, kein Trockner."],["Welche Größen gibt es?","Eine Größe für fast alle: Der Schiebeknoten lässt sich von ca. 14 bis 22 cm Handgelenkumfang verstellen."],["Wie lange dauert der Versand?","Wir verschicken innerhalb von 1–2 Werktagen aus Düsseldorf. In Deutschland ist dein Paket meist 2–3 Tage später da."],["Wer steckt hinter ÅCORD CO.?","Eine kleine Truppe aus Düsseldorf. Wir knoten jedes Armband selbst und wollten etwas, das man einfach nie ablegen muss."]],
@@ -356,6 +359,7 @@ const T = {
   "hero.h":"One knot.<br>Every day.","hero.p":"Hand-knotted 550 paracord bracelets. Light, waterproof, adjustable. Made to never take off.",
   "cta.shop":"Shop now","col.core":"Core Collection","col.pattern":"Pattern Collection","p.sub":"550 Paracord Bracelet",
   "p.add":"Add to cart","p.sold":"Sold out","p.added":"In cart",
+  "b.l":"Beads","b.none":"None","b.gold":"Gold","b.silver":"Silver","bt.gold":"Gold beads","bt.silver":"Silver beads",
   "crew.k":"FOR THE CREW","crew.q":"“We wanted a bracelet that goes with everything and that you just leave on. In the shower, in the club, by the Rhine, in Saint-Tropez.”",
   "faq.h":"FAQ",
   "faq":[["Can it go in the water?","Yes. 550 paracord is nylon, handles salt and fresh water and dries fast. Just leave it on."],["How do I clean it?","Knead it in lukewarm water with a bit of soap, then let it air dry. No washing machine, no dryer."],["What sizes are there?","One size fits almost everyone: the sliding knot adjusts from about 14 to 22 cm wrist size."],["How long does shipping take?","We ship from Düsseldorf within 1–2 business days. Within Germany it usually arrives 2–3 days later, other EU countries a bit longer."],["Who's behind ÅCORD CO.?","A small crew from Düsseldorf. We knot every bracelet ourselves and wanted something you never have to take off."]],
@@ -380,6 +384,7 @@ const T = {
   "hero.h":"Eén knoop.<br>Elke dag.","hero.p":"Handgeknoopte 550 paracord armbanden. Licht, waterdicht, verstelbaar. Gemaakt om nooit meer af te doen.",
   "cta.shop":"Nu shoppen","col.core":"Core Collectie","col.pattern":"Pattern Collectie","p.sub":"550 Paracord Armband",
   "p.add":"In winkelmand","p.sold":"Uitverkocht","p.added":"In winkelmand",
+  "b.l":"Kralen","b.none":"Zonder","b.gold":"Goud","b.silver":"Zilver","bt.gold":"Gouden kralen","bt.silver":"Zilveren kralen",
   "crew.k":"VOOR DE CREW","crew.q":"„We wilden een armband die overal bij past en die je gewoon omhoudt. Onder de douche, in de club, aan de Rijn, in Saint-Tropez.”",
   "faq.h":"Veelgestelde vragen",
   "faq":[["Mag de armband in het water?","Ja. 550 paracord is van nylon, kan tegen zout en zoet water en droogt snel. Gewoon omhouden."],["Hoe maak ik hem schoon?","Even kneden in lauw water met wat zeep en aan de lucht laten drogen. Geen wasmachine, geen droger."],["Welke maten zijn er?","Eén maat voor bijna iedereen: de schuifknoop is verstelbaar van ca. 14 tot 22 cm polsomvang."],["Hoe lang duurt de verzending?","We versturen binnen 1–2 werkdagen vanuit Düsseldorf. Naar Nederland duurt het meestal 2–4 dagen."],["Wie zit er achter ÅCORD CO.?","Een kleine crew uit Düsseldorf. We knopen elke armband zelf en wilden iets dat je nooit af hoeft te doen."]],
@@ -408,7 +413,12 @@ if(!T[lang]) lang = "de";
 let cart = store.get("cc_cart", {});
 const t = k => T[lang][k] ?? T.de[k] ?? k;
 const eur = v => new Intl.NumberFormat(lang==="en"?"en-IE":lang+"-"+lang.toUpperCase(),{style:"currency",currency:CURRENCY}).format(v);
-const P = id => PRODUCTS.find(p=>p.id===id);
+const P = id => PRODUCTS.find(p=>p.id===id.split("|")[0]);
+const BEADS=["none","gold","silver"];
+const bead = key => key.split("|")[1]||"none";
+const beadTxt = b => b==="none"?"":t("bt."+b);
+let sel = {};
+function pick(id,b){sel[id]=b;renderProducts()}
 
 /* ---------- i18n ---------- */
 function applyLang(){
@@ -423,9 +433,10 @@ document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{lang=b.datas
 
 /* ---------- products ---------- */
 function card(p){
-  const inCart = cart[p.id];
+  const inCart = Object.entries(cart).filter(([k])=>k.split("|")[0]===p.id).reduce((a,[,q])=>a+q,0);
   return `<article class="card"><div class="ph">${p.soldout?`<span class="badge">${t("p.sold")}</span>`:""}<img src="${IMG+p.img}" alt="ÅCORD ${p.n[lang]}" loading="lazy"></div>
   <h3>${p.n[lang]}</h3><div class="sub">${t("p.sub")}</div><p class="pr">${eur(p.price)}</p>
+  <div class="opt"><span>${t("b.l")}</span>${BEADS.map(b=>`<button class="${b[0]}${b===(sel[p.id]||"none")?" on":""}" onclick="pick('${p.id}','${b}')">${b!=="none"?"<i></i>":""}${t("b."+b)}</button>`).join("")}</div>
   <button class="add" ${p.soldout?"disabled":""} onclick="add('${p.id}')">${p.soldout?t("p.sold"):t("p.add")}${inCart&&!p.soldout?` (${inCart})`:""}</button></article>`;
 }
 function renderProducts(){
@@ -440,12 +451,12 @@ function totals(){
   return {sub:+sub.toFixed(2), ship, total:+(sub+ship).toFixed(2), count:Object.values(cart).reduce((a,b)=>a+b,0)};
 }
 function save(){store.set("cc_cart",cart);renderCart();renderProducts();renderSummary()}
-function add(id){cart[id]=(cart[id]||0)+1;save();toast(t("toast.add"))}
+function add(id){const k=id+"|"+(sel[id]||"none");cart[k]=(cart[k]||0)+1;save();toast(t("toast.add"))}
 function setQ(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];save()}
 function rm(id){delete cart[id];save()}
 function lineHTML(id,q,editable){
   const p=P(id);
-  return `<div class="li"><img src="${IMG+p.img}" alt=""><div><div class="n">${p.n[lang]}</div>${editable?`<span class="qty"><button onclick="setQ('${id}',-1)">−</button><span>${q}</span><button onclick="setQ('${id}',1)">+</button></span><button class="rm" onclick="rm('${id}')">${t("c.rm")}</button>`:`<span style="font-size:13px;color:var(--mut)">× ${q}</span>`}</div><div>${eur(p.price*q)}</div></div>`;
+  return `<div class="li"><img src="${IMG+p.img}" alt=""><div><div class="n">${p.n[lang]}</div>${bead(id)!=="none"?`<div class="v">${beadTxt(bead(id))}</div>`:""}${editable?`<span class="qty"><button onclick="setQ('${id}',-1)">−</button><span>${q}</span><button onclick="setQ('${id}',1)">+</button></span><button class="rm" onclick="rm('${id}')">${t("c.rm")}</button>`:`<span style="font-size:13px;color:var(--mut)">× ${q}</span>`}</div><div>${eur(p.price*q)}</div></div>`;
 }
 function renderCart(){
   const {sub,count}=totals();
@@ -497,7 +508,7 @@ function renderPayPal(){
         purchase_units:[{
           description:"ÅCORD CO. Order",
           amount:{currency_code:CURRENCY,value:total.toFixed(2),breakdown:{item_total:{currency_code:CURRENCY,value:sub.toFixed(2)},shipping:{currency_code:CURRENCY,value:ship.toFixed(2)}}},
-          items:Object.entries(cart).map(([id,q])=>({name:"550 Paracord – "+P(id).n.de,sku:id,quantity:String(q),unit_amount:{currency_code:CURRENCY,value:P(id).price.toFixed(2)},category:"PHYSICAL_GOODS"})),
+          items:Object.entries(cart).map(([id,q])=>({name:"550 Paracord – "+P(id).n.de+(bead(id)!=="none"?" · "+T.de["bt."+bead(id)]:""),sku:id.replace("|none",""),quantity:String(q),unit_amount:{currency_code:CURRENCY,value:P(id).price.toFixed(2)},category:"PHYSICAL_GOODS"})),
           shipping:{name:{full_name:f.first+" "+f.last},address:{address_line_1:f.street,admin_area_2:f.city,postal_code:f.zip,country_code:f.country}}
         }],
         payer:{email_address:f.email,name:{given_name:f.first,surname:f.last}},
