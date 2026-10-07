@@ -314,13 +314,13 @@ const FREE_SHIPPING_FROM = 35;  // ab diesem Warenwert versandkostenfrei
 
 const IMG = "https://d8j0ntlcm91z4.cloudfront.net/user_3Cep5C6VH2HJm0OHPr3jxyypVQg/";
 const PRODUCTS = [
-  {id:"rheinblau",col:"core",price:18.80,img:"hf_20261004_052926_c79f6da3-fdaa-4ae4-8507-281ad15a4b9d.png",n:{de:"Rheinblau",en:"Rhine Blue",nl:"Rijnblauw"}},
-  {id:"sand",col:"core",price:18.80,img:"hf_20261004_052951_9a01e2e2-a49a-4a5e-a606-e412c5f195e9.png",n:{de:"Sand",en:"Sand",nl:"Zand"}},
-  {id:"waldgruen",col:"core",price:18.80,img:"hf_20261004_052925_903a6447-5bf5-4433-a023-807803989b29.png",n:{de:"Waldgrün",en:"Forest Green",nl:"Bosgroen"}},
-  {id:"tangerine",col:"core",price:18.80,img:"hf_20261004_052926_c9a46ac6-aec5-40f7-a8af-339d5049075e.png",n:{de:"Tangerine",en:"Tangerine",nl:"Mandarijn"}},
-  {id:"kohle",col:"core",price:18.80,img:"hf_20261004_052926_edfb8030-c5f8-46ae-aef5-f839f622a645.png",n:{de:"Kohle",en:"Charcoal",nl:"Antraciet"}},
+  {id:"rheinblau",gold:"hf_20261007_215608_47c05f2e-86be-48bc-8b33-eddc9f7e2b7a.png",col:"core",price:18.80,img:"hf_20261004_052926_c79f6da3-fdaa-4ae4-8507-281ad15a4b9d.png",n:{de:"Rheinblau",en:"Rhine Blue",nl:"Rijnblauw"}},
+  {id:"sand",gold:"hf_20261007_215702_d9459d4d-e8f0-4a21-ab8d-fcc32a10032c.png",col:"core",price:18.80,img:"hf_20261004_052951_9a01e2e2-a49a-4a5e-a606-e412c5f195e9.png",n:{de:"Sand",en:"Sand",nl:"Zand"}},
+  {id:"waldgruen",silver:"hf_20261007_215608_c295dd1a-7d8d-49d7-882a-1b8a392e454d.png",col:"core",price:18.80,img:"hf_20261004_052925_903a6447-5bf5-4433-a023-807803989b29.png",n:{de:"Waldgrün",en:"Forest Green",nl:"Bosgroen"}},
+  {id:"tangerine",silver:"hf_20261007_215608_a87bb7bb-8c62-4856-ab9c-b71fb645cceb.png",col:"core",price:18.80,img:"hf_20261004_052926_c9a46ac6-aec5-40f7-a8af-339d5049075e.png",n:{de:"Tangerine",en:"Tangerine",nl:"Mandarijn"}},
+  {id:"kohle",gold:"hf_20261007_215702_734b53f5-99bf-4ce9-9266-7dba3f5aed4d.png",col:"core",price:18.80,img:"hf_20261004_052926_edfb8030-c5f8-46ae-aef5-f839f622a645.png",n:{de:"Kohle",en:"Charcoal",nl:"Antraciet"}},
   {id:"flieder",col:"core",price:18.80,soldout:true,img:"hf_20261004_052926_bc3607b5-5398-493a-9592-4194e85875b3.png",n:{de:"Flieder",en:"Lilac",nl:"Lila"}},
-  {id:"kirsche",col:"core",price:18.80,img:"hf_20261004_052927_2cd44674-4406-49b0-9df4-38278ff07794.png",n:{de:"Kirsche",en:"Cherry",nl:"Kers"}},
+  {id:"kirsche",silver:"hf_20261007_215702_e60f70c4-2e4a-4fae-b73a-2598cfe1ff91.png",col:"core",price:18.80,img:"hf_20261004_052927_2cd44674-4406-49b0-9df4-38278ff07794.png",n:{de:"Kirsche",en:"Cherry",nl:"Kers"}},
   {id:"butter",col:"core",price:18.80,soldout:true,img:"hf_20261004_052951_cd5b15da-a060-465f-8c69-fd119863c274.png",n:{de:"Butter",en:"Butter",nl:"Boter"}},
   {id:"matrose",col:"pattern",price:18.80,img:"hf_20261004_052925_d0ef341a-1337-427d-80bb-c0804a7ac703.png",n:{de:"Matrose · Streifen",en:"Sailor · Stripe",nl:"Matroos · Streep"}},
   {id:"woodland",col:"pattern",price:18.80,img:"hf_20261004_052951_950a4644-269b-4e08-825f-959a2c42c161.png",n:{de:"Woodland · Camo",en:"Woodland · Camo",nl:"Woodland · Camo"}}
@@ -417,6 +417,7 @@ const P = id => PRODUCTS.find(p=>p.id===id.split("|")[0]);
 const BEADS=["none","gold","silver"];
 const bead = key => key.split("|")[1]||"none";
 const beadTxt = b => b==="none"?"":t("bt."+b);
+const pimg = (p,b) => IMG+((b&&b!=="none"&&p[b])||p.img);
 let sel = {};
 function pick(id,b){sel[id]=b;renderProducts()}
 
@@ -434,7 +435,7 @@ document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{lang=b.datas
 /* ---------- products ---------- */
 function card(p){
   const inCart = Object.entries(cart).filter(([k])=>k.split("|")[0]===p.id).reduce((a,[,q])=>a+q,0);
-  return `<article class="card"><div class="ph">${p.soldout?`<span class="badge">${t("p.sold")}</span>`:""}<img src="${IMG+p.img}" alt="ÅCORD ${p.n[lang]}" loading="lazy"></div>
+  return `<article class="card"><div class="ph">${p.soldout?`<span class="badge">${t("p.sold")}</span>`:""}<img src="${pimg(p,sel[p.id])}" alt="ÅCORD ${p.n[lang]}${sel[p.id]&&sel[p.id]!=="none"?" · "+beadTxt(sel[p.id]):""}" loading="lazy"></div>
   <h3>${p.n[lang]}</h3><div class="sub">${t("p.sub")}</div><p class="pr">${eur(p.price)}</p>
   <div class="opt"><span>${t("b.l")}</span>${BEADS.map(b=>`<button class="${b[0]}${b===(sel[p.id]||"none")?" on":""}" onclick="pick('${p.id}','${b}')">${b!=="none"?"<i></i>":""}${t("b."+b)}</button>`).join("")}</div>
   <button class="add" ${p.soldout?"disabled":""} onclick="add('${p.id}')">${p.soldout?t("p.sold"):t("p.add")}${inCart&&!p.soldout?` (${inCart})`:""}</button></article>`;
@@ -456,7 +457,7 @@ function setQ(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];save
 function rm(id){delete cart[id];save()}
 function lineHTML(id,q,editable){
   const p=P(id);
-  return `<div class="li"><img src="${IMG+p.img}" alt=""><div><div class="n">${p.n[lang]}</div>${bead(id)!=="none"?`<div class="v">${beadTxt(bead(id))}</div>`:""}${editable?`<span class="qty"><button onclick="setQ('${id}',-1)">−</button><span>${q}</span><button onclick="setQ('${id}',1)">+</button></span><button class="rm" onclick="rm('${id}')">${t("c.rm")}</button>`:`<span style="font-size:13px;color:var(--mut)">× ${q}</span>`}</div><div>${eur(p.price*q)}</div></div>`;
+  return `<div class="li"><img src="${pimg(p,bead(id))}" alt=""><div><div class="n">${p.n[lang]}</div>${bead(id)!=="none"?`<div class="v">${beadTxt(bead(id))}</div>`:""}${editable?`<span class="qty"><button onclick="setQ('${id}',-1)">−</button><span>${q}</span><button onclick="setQ('${id}',1)">+</button></span><button class="rm" onclick="rm('${id}')">${t("c.rm")}</button>`:`<span style="font-size:13px;color:var(--mut)">× ${q}</span>`}</div><div>${eur(p.price*q)}</div></div>`;
 }
 function renderCart(){
   const {sub,count}=totals();
