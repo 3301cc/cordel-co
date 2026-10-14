@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ÅCORD CO. – Paracord Armbänder aus Düsseldorf</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <script src="assets/2727a9f3-7936-4991-ade1-a3bafe390258.js"></script>
 
 
@@ -187,10 +188,7 @@ input,textarea,select,button{font:inherit;color:inherit}
         </sc-if>
       </div>
       <div sc-camel-on-click="{{ goHome }}" style="cursor:pointer;display:flex;align-items:center;gap:12px">
-        <svg sc-camel-view-box="0 0 100 100" width="40" height="40" fill="none" stroke="currentColor" stroke-width="3"><circle cx="50" cy="50" r="46"></circle><circle cx="50" cy="50" r="38" stroke-dasharray="4 3"></circle><path d="M34 44c8-10 24-10 32 0M34 56c8 10 24 10 32 0M38 44c6 6 18 6 24 12M38 56c6-6 18-6 24-12" stroke-width="3.2" stroke-linecap="round"></path></svg>
-        <div style="display:flex;flex-direction:column;gap:2px">
-          <span style="font-family:'Libre Caslon Display',serif;font-size:24px;letter-spacing:0.2em;line-height:1">ÅCORD CO.</span>
-        </div>
+        <div role="img" aria-label="ÅCORD CO." style="height:58px;width:140px;background:url({{ logoSrc }}) center / contain no-repeat"></div>
       </div>
       <div style="display:flex;justify-content:flex-end;align-items:center;gap:22px;font-size:12px;letter-spacing:0.14em">
         <div style="display:flex;gap:10px">
@@ -489,7 +487,7 @@ input,textarea,select,button{font:inherit;color:inherit}
 
   <footer style="border-top:1px solid #DCD3C2;background:#EFE8DC">
     <div style="max-width:1320px;margin:0 auto;padding:40px 32px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px;font-size:14px">
-      <span style="font-family:'Libre Caslon Display',serif;font-size:20px;letter-spacing:0.18em">ÅCORD CO.</span>
+      <div role="img" aria-label="ÅCORD CO." style="height:44px;width:106px;background:url(assets/logo-dark.svg) center / contain no-repeat"></div>
       <div style="display:flex;flex-wrap:wrap;gap:24px;color:#3A3A36"><span sc-camel-on-click="{{ goAgb }}" style="cursor:pointer;text-decoration:underline;text-underline-offset:3px">{{ tx.agb }}</span><span sc-camel-on-click="{{ goImp }}" style="cursor:pointer;text-decoration:underline;text-underline-offset:3px">{{ tx.imp }}</span><span>© 2026 ÅCORD CO. All rights reserved.</span></div>
     </div>
   </footer>
@@ -624,7 +622,7 @@ class Component extends DCLogic {
       nl: { back: 'Terug naar catalogus', more: 'Ook mooi', bag: 'Tas', close: 'Sluiten', menu: 'Menu', mat: 'Het materiaal', to: 'tot gratis verzending' } }[lang];
     const freeAt = D ? D.FREE_SHIPPING_FROM : 60;
     return {
-      ui, hdrBg: over ? 'rgba(0,0,0,0)' : '#F4EFE6', hdrFg: over ? '#F7F2E8' : '#1C2640', hdrLine: over ? 'rgba(247,242,232,0.25)' : '#DCD3C2', hdrSub: over ? '#E6D3A3' : '#6E6A60',
+      ui, hdrBg: over ? 'rgba(0,0,0,0)' : '#F4EFE6', hdrFg: over ? '#F7F2E8' : '#1C2640', logoSrc: over ? 'assets/logo-light.svg' : 'assets/logo-dark.svg', hdrLine: over ? 'rgba(247,242,232,0.25)' : '#DCD3C2', hdrSub: over ? '#E6D3A3' : '#6E6A60',
       mainPad: s.route === 'home' ? '0px' : '122px', wide: !s.narrow, narrow: s.narrow, menu: s.menu, toggleMenu: () => this.setState(st => ({ menu: !st.menu })),
       drawer: s.drawer, openCart: () => this.setState({ drawer: true }), closeCart: () => this.setState({ drawer: false }),
       progress: `${Math.min(100, sub / freeAt * 100).toFixed(1)}%`,
