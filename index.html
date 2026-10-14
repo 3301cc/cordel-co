@@ -253,7 +253,7 @@ input,textarea,select,button{font:inherit;color:inherit}
                     </sc-for>
                   </div>
                 </sc-if>
-                <span sc-camel-on-click="{{ p.add }}" style="cursor:{{ p.cur }};text-align:center;background:{{ p.btnBg }};color:#F4EFE6;padding:13px 18px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase">{{ p.btn }}</span>
+                <span sc-camel-on-click="{{ p.add }}" style="margin-top:auto;cursor:{{ p.cur }};text-align:center;background:{{ p.btnBg }};color:#F4EFE6;padding:13px 18px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase">{{ p.btn }}</span>
               </article>
             </sc-for>
           </div>
@@ -473,13 +473,24 @@ input,textarea,select,button{font:inherit;color:inherit}
         <span sc-camel-on-click="{{ goShop }}" style="cursor:pointer;background:#1C2640;color:#F4EFE6;padding:15px 28px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase">{{ tx.okBack }}</span>
       </section>
     </sc-if>
+    <sc-if value="{{ isLegal }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Legal" style="max-width:820px;margin:0 auto;padding:56px 32px 0;display:flex;flex-direction:column;gap:28px">
+        <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:46px">{{ legalTitle }}</h1>
+        <sc-for list="{{ legalBlocks }}" as="b" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:{{ b.size }};color:#1C2640;padding-top:{{ b.pad }}">{{ b.h }}</h2>
+            <p style="margin:0;font-size:16px;line-height:1.7;color:#3A3A36;white-space:pre-line;text-wrap:pretty">{{ b.p }}</p>
+          </div>
+        </sc-for>
+      </section>
+    </sc-if>
     <div style="height:96px"></div>
   </main>
 
   <footer style="border-top:1px solid #DCD3C2;background:#EFE8DC">
     <div style="max-width:1320px;margin:0 auto;padding:40px 32px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px;font-size:14px">
       <span style="font-family:'Libre Caslon Display',serif;font-size:20px;letter-spacing:0.18em">ÅCORD CO.</span>
-      <div style="display:flex;gap:24px;color:#3A3A36"><span>{{ tx.agb }}</span><span>{{ tx.imp }}</span><span>© MMXXVI</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:24px;color:#3A3A36"><span sc-camel-on-click="{{ goAgb }}" style="cursor:pointer;text-decoration:underline;text-underline-offset:3px">{{ tx.agb }}</span><span sc-camel-on-click="{{ goImp }}" style="cursor:pointer;text-decoration:underline;text-underline-offset:3px">{{ tx.imp }}</span><span>© 2026 ÅCORD CO. All rights reserved.</span></div>
     </div>
   </footer>
 
@@ -535,7 +546,7 @@ class Component extends DCLogic {
       this.onScroll = () => { const sc = window.scrollY > 60; if (sc !== this.state.scrolled) this.setState({ scrolled: sc }); };
       this.onResize = () => { const n = window.innerWidth < 1140; if (n !== this.state.narrow) this.setState({ narrow: n }); };
       window.addEventListener('scroll', this.onScroll, { passive: true }); window.addEventListener('resize', this.onResize); this.onScroll(); this.onResize();
-      const routes = ['home', 'shop', 'company', 'contact', 'checkout', 'product'];
+      const routes = ['home', 'shop', 'company', 'contact', 'checkout', 'product', 'agb', 'imp'];
       if (s && s.pid) this.setState({ pid: s.pid });
       if (s) this.setState({ route: routes.includes(s.route) ? s.route : 'home', lang: ['de', 'en', 'nl'].includes(s.lang) ? s.lang : 'de',
         cart: s.cart && typeof s.cart === 'object' && !Array.isArray(s.cart) ? s.cart : {} });
@@ -583,6 +594,7 @@ class Component extends DCLogic {
       bar: bars[lang], nav, tx, hero1, hero2: hero2 || '', count: lines.reduce((a, l) => a + l.qty, 0),
       langs: ['de', 'en', 'nl'].map(c => ({ code: c.toUpperCase(), op: lang === c ? 1 : 0.55, line: lang === c ? 'currentColor' : 'transparent', pick: () => this.setState({ lang: c }) })),
       goHome: () => this.go('home'), goShop: () => this.go('shop'), goCart: () => this.setState({ drawer: true }), goCheckout: () => this.go('checkout'),
+      isLegal: s.route === 'agb' || s.route === 'imp', legalTitle: (D && D.LEGAL ? ((D.LEGAL[lang] || D.LEGAL.de)[s.route] || { title: '' }).title : ''), legalBlocks: (D && D.LEGAL ? (((D.LEGAL[lang] || D.LEGAL.de)[s.route] || { blocks: [] }).blocks) : []).map(([h, p]) => ({ h, p, size: p ? '20px' : '30px', pad: p ? '0px' : '20px' })), goAgb: () => this.go('agb'), goImp: () => this.go('imp'),
       isHome: s.route === 'home', showGrid: s.route === 'home' || s.route === 'shop', isCompany: s.route === 'company', isContact: s.route === 'contact', isCart: s.route === 'cart', isCheckout: s.route === 'checkout', isOk: s.route === 'ok',
       collections: [['core', 'col.core'], ['pattern', 'col.pattern']].map(([c, k]) => ({ label: t(k), title: t(k), price: eur(18.8), items: P.filter(p => p.col === c).map(card) })),
       crewImg: D ? R(D.heroImgs[1]) : '', coImg: D ? R(D.heroImgs[2]) : '',
