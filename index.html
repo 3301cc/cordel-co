@@ -173,7 +173,7 @@ input,textarea,select,button{font:inherit;color:inherit}
 
 <div style="min-height:100vh;display:flex;flex-direction:column;color:#1E2433;font-family:'Libre Caslon Text',serif">
   <header style="position:fixed;top:0;left:0;right:0;z-index:30;background:{{ hdrBg }};border-bottom:1px solid {{ hdrLine }};color:{{ hdrFg }};transition:background 0.35s ease, color 0.35s ease, border-color 0.35s ease">
-    <div style="max-width:1320px;margin:0 auto;padding:0 32px;height:78px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px">
+    <div style="max-width:1320px;margin:0 auto;padding:{{ hdrPad }};height:78px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:16px">
       <div style="display:flex;align-items:center;min-width:0">
         <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
           <nav style="display:flex;gap:clamp(16px,2vw,30px);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;white-space:nowrap">
@@ -187,14 +187,16 @@ input,textarea,select,button{font:inherit;color:inherit}
         </sc-if>
       </div>
       <div sc-camel-on-click="{{ goHome }}" style="cursor:pointer;display:flex;align-items:center;gap:12px">
-        <div role="img" aria-label="ÅCORD CO." style="height:58px;width:140px;background:url({{ logoSrc }}) center / contain no-repeat"></div>
+        <div role="img" aria-label="ÅCORD CO." style="height:{{ logoH }};width:{{ logoW }};background:url({{ logoSrc }}) center / contain no-repeat"></div>
       </div>
       <div style="display:flex;justify-content:flex-end;align-items:center;gap:22px;font-size:12px;letter-spacing:0.14em">
-        <div style="display:flex;gap:10px">
-          <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
-            <span sc-camel-on-click="{{ l.pick }}" style="cursor:pointer;opacity:{{ l.op }};border-bottom:1px solid {{ l.line }}">{{ l.code }}</span>
-          </sc-for>
-        </div>
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:10px">
+            <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+              <span sc-camel-on-click="{{ l.pick }}" style="cursor:pointer;opacity:{{ l.op }};border-bottom:1px solid {{ l.line }}">{{ l.code }}</span>
+            </sc-for>
+          </div>
+        </sc-if>
         <span sc-camel-on-click="{{ goCart }}" style="cursor:pointer;display:flex;align-items:center;gap:8px"><svg sc-camel-view-box="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 8h14l-1 13H6L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span style="min-width:22px;height:22px;border-radius:11px;background:#A8874A;color:#1C2640;font-family:'JetBrains Mono',monospace;font-size:11px;display:flex;align-items:center;justify-content:center;padding:0 6px;box-sizing:border-box">{{ count }}</span></span>
       </div>
     </div>
@@ -203,6 +205,11 @@ input,textarea,select,button{font:inherit;color:inherit}
         <sc-for list="{{ nav }}" as="n" hint-placeholder-count="4">
           <span sc-camel-on-click="{{ n.go }}" style="cursor:pointer;padding:16px 0;border-bottom:1px solid #DCD3C2;font-family:'Libre Caslon Display',serif;font-size:28px">{{ n.label }}</span>
         </sc-for>
+        <div style="display:flex;gap:22px;padding-top:20px;font-size:13px;letter-spacing:0.16em">
+          <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+            <span sc-camel-on-click="{{ l.pick }}" style="cursor:pointer;opacity:{{ l.op }};border-bottom:1px solid {{ l.line }};padding-bottom:2px">{{ l.code }}</span>
+          </sc-for>
+        </div>
       </nav>
     </sc-if>
   </header>
@@ -619,7 +626,7 @@ class Component extends DCLogic {
       nl: { back: 'Terug naar catalogus', more: 'Ook mooi', bag: 'Tas', close: 'Sluiten', menu: 'Menu', mat: 'Het materiaal', to: 'tot gratis verzending' } }[lang];
     const freeAt = D ? D.FREE_SHIPPING_FROM : 60;
     return {
-      ui, hdrBg: over ? 'rgba(0,0,0,0)' : '#F4EFE6', hdrFg: over ? '#F7F2E8' : '#1C2640', logoSrc: over ? 'assets/logo-light.svg' : 'assets/logo-dark.svg', hdrLine: over ? 'rgba(247,242,232,0.25)' : '#DCD3C2', hdrSub: over ? '#E6D3A3' : '#6E6A60',
+      ui, hdrBg: over ? 'rgba(0,0,0,0)' : '#F4EFE6', hdrFg: over ? '#F7F2E8' : '#1C2640', logoSrc: over ? 'assets/logo-light.svg' : 'assets/logo-dark.svg', logoH: s.narrow ? '48px' : '58px', logoW: s.narrow ? '116px' : '140px', hdrPad: s.narrow ? '0 20px' : '0 32px', hdrLine: over ? 'rgba(247,242,232,0.25)' : '#DCD3C2', hdrSub: over ? '#E6D3A3' : '#6E6A60',
       mainPad: s.route === 'home' ? '0px' : '92px', wide: !s.narrow, narrow: s.narrow, menu: s.menu, toggleMenu: () => this.setState(st => ({ menu: !st.menu })),
       drawer: s.drawer, openCart: () => this.setState({ drawer: true }), closeCart: () => this.setState({ drawer: false }),
       progress: `${Math.min(100, sub / freeAt * 100).toFixed(1)}%`,
