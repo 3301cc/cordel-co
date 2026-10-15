@@ -173,7 +173,6 @@ input,textarea,select,button{font:inherit;color:inherit}
 
 <div style="min-height:100vh;display:flex;flex-direction:column;color:#1E2433;font-family:'Libre Caslon Text',serif">
   <header style="position:fixed;top:0;left:0;right:0;z-index:30;background:{{ hdrBg }};border-bottom:1px solid {{ hdrLine }};color:{{ hdrFg }};transition:background 0.35s ease, color 0.35s ease, border-color 0.35s ease">
-    <div style="background:#1C2640;color:#EDE6D6;text-align:center;padding:9px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em">{{ bar }}</div>
     <div style="max-width:1320px;margin:0 auto;padding:0 32px;height:78px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:24px">
       <div style="display:flex;align-items:center;min-width:0">
         <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
@@ -339,7 +338,6 @@ input,textarea,select,button{font:inherit;color:inherit}
             </div>
           </sc-if>
           <span sc-camel-on-click="{{ cur.add }}" style="cursor:{{ cur.cur }};text-align:center;background:{{ cur.btnBg }};color:#F4EFE6;padding:18px 28px;font-size:12px;letter-spacing:0.22em;text-transform:uppercase">{{ cur.btn }} · {{ cur.priceStr }}</span>
-          <span style="font-size:13px;color:#6E6A60">{{ bar }}</span>
           <div style="display:flex;flex-direction:column;border-top:1px solid #DCD3C2">
             <sc-for list="{{ details }}" as="d" hint-placeholder-count="5">
               <div style="border-bottom:1px solid #DCD3C2;padding:16px 0">
@@ -587,9 +585,8 @@ class Component extends DCLogic {
     }).filter(Boolean);
     const sub = lines.reduce((a, l) => a + l.qty, 0) * 18.8, free = D ? sub >= D.FREE_SHIPPING_FROM : false, ship = lines.length ? (free ? 0 : (D ? D.SHIPPING : 0)) : 0;
     const nav = [['home', 'nav.home'], ['shop', 'nav.shop'], ['company', 'nav.company'], ['contact', 'nav.contact']].map(([r, k]) => ({ label: t(k), line: s.route === r ? '#1C2640' : 'transparent', go: () => this.go(r) }));
-    const bars = { de: 'Kostenloser Versand ab 60 € · Made in Germany', en: 'Free shipping from €60 · Made in Germany', nl: 'Gratis verzending vanaf €60 · Made in Germany' };
     return {
-      bar: bars[lang], nav, tx, hero1, hero2: hero2 || '', count: lines.reduce((a, l) => a + l.qty, 0),
+      nav, tx, hero1, hero2: hero2 || '', count: lines.reduce((a, l) => a + l.qty, 0),
       langs: ['de', 'en', 'nl'].map(c => ({ code: c.toUpperCase(), op: lang === c ? 1 : 0.55, line: lang === c ? 'currentColor' : 'transparent', pick: () => this.setState({ lang: c }) })),
       goHome: () => this.go('home'), goShop: () => this.go('shop'), goCart: () => this.setState({ drawer: true }), goCheckout: () => this.go('checkout'),
       isLegal: s.route === 'agb' || s.route === 'imp', legalTitle: (D && D.LEGAL ? ((D.LEGAL[lang] || D.LEGAL.de)[s.route] || { title: '' }).title : ''), legalBlocks: (D && D.LEGAL ? (((D.LEGAL[lang] || D.LEGAL.de)[s.route] || { blocks: [] }).blocks) : []).map(([h, p]) => ({ h, p, size: p ? '20px' : '30px', pad: p ? '0px' : '20px' })), goAgb: () => this.go('agb'), goImp: () => this.go('imp'),
@@ -623,7 +620,7 @@ class Component extends DCLogic {
     const freeAt = D ? D.FREE_SHIPPING_FROM : 60;
     return {
       ui, hdrBg: over ? 'rgba(0,0,0,0)' : '#F4EFE6', hdrFg: over ? '#F7F2E8' : '#1C2640', logoSrc: over ? 'assets/logo-light.svg' : 'assets/logo-dark.svg', hdrLine: over ? 'rgba(247,242,232,0.25)' : '#DCD3C2', hdrSub: over ? '#E6D3A3' : '#6E6A60',
-      mainPad: s.route === 'home' ? '0px' : '122px', wide: !s.narrow, narrow: s.narrow, menu: s.menu, toggleMenu: () => this.setState(st => ({ menu: !st.menu })),
+      mainPad: s.route === 'home' ? '0px' : '92px', wide: !s.narrow, narrow: s.narrow, menu: s.menu, toggleMenu: () => this.setState(st => ({ menu: !st.menu })),
       drawer: s.drawer, openCart: () => this.setState({ drawer: true }), closeCart: () => this.setState({ drawer: false }),
       progress: `${Math.min(100, sub / freeAt * 100).toFixed(1)}%`,
       isProduct: s.route === 'product', cur: cp ? card(cp) : null,
