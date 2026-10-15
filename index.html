@@ -197,6 +197,7 @@ input,textarea,select,button{font:inherit;color:inherit}
             </sc-for>
           </div>
         </sc-if>
+        <span sc-camel-on-click="{{ goAccount }}" title="{{ tx.acctTitle }}" style="cursor:pointer;display:flex;align-items:center;border-bottom:1px solid {{ acctLine }};padding-bottom:2px"><svg sc-camel-view-box="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"></path></svg></span>
         <span sc-camel-on-click="{{ goCart }}" style="cursor:pointer;display:flex;align-items:center;gap:8px"><svg sc-camel-view-box="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 8h14l-1 13H6L5 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg><span style="min-width:22px;height:22px;border-radius:11px;background:#A8874A;color:#1C2640;font-family:'JetBrains Mono',monospace;font-size:11px;display:flex;align-items:center;justify-content:center;padding:0 6px;box-sizing:border-box">{{ count }}</span></span>
       </div>
     </div>
@@ -451,9 +452,10 @@ input,textarea,select,button{font:inherit;color:inherit}
           <span style="font-size:15px;color:#3A3A36">{{ tx.ckSteps }}</span>
           <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px">
             <sc-for list="{{ fields }}" as="f" hint-placeholder-count="7">
-              <label style="grid-column:{{ f.span }};display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#6E6A60">{{ f.label }}<input style="background:#FBF8F2;border:1px solid #CFC6B4;padding:13px;font-family:'Libre Caslon Text',serif;font-size:15px;color:#1E2433;outline:none"></label>
+              <label style="grid-column:{{ f.span }};display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#6E6A60">{{ f.label }}<input value="{{ f.val }}" sc-camel-on-change="{{ f.set }}" style="background:#FBF8F2;border:1px solid #CFC6B4;padding:13px;font-family:'Libre Caslon Text',serif;font-size:15px;color:#1E2433;outline:none"></label>
             </sc-for>
           </div>
+          <span sc-camel-on-click="{{ goAccount }}" style="cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.06em;color:#A8874A">{{ ckAcct }}</span>
           <span style="font-size:13px;line-height:1.6;color:#6E6A60">{{ tx.legal }}</span>
         </div>
         <div style="background:#FBF8F2;border:1px solid #DCD3C2;padding:28px;display:flex;flex-direction:column;gap:12px;font-size:15px">
@@ -476,6 +478,76 @@ input,textarea,select,button{font:inherit;color:inherit}
         <span sc-camel-on-click="{{ goShop }}" style="cursor:pointer;background:#1C2640;color:#F4EFE6;padding:15px 28px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase">{{ tx.okBack }}</span>
       </section>
     </sc-if>
+    <sc-if value="{{ isAccount }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Account" style="max-width:820px;margin:0 auto;padding:56px 32px 0;display:flex;flex-direction:column;gap:32px">
+        <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+          <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:46px">{{ tx.acctTitle }}</h1>
+          <div style="display:flex;gap:28px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;border-bottom:1px solid #DCD3C2">
+            <sc-for list="{{ authTabs }}" as="a" hint-placeholder-count="2">
+              <span sc-camel-on-click="{{ a.pick }}" style="cursor:pointer;padding:0 0 12px;margin-bottom:-1px;border-bottom:1px solid {{ a.line }};opacity:{{ a.op }}">{{ a.label }}</span>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;max-width:460px">
+            <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ false }}">
+              <label style="display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#6E6A60">{{ tx.acctName }}<input value="{{ afName }}" sc-camel-on-change="{{ setAfName }}" style="background:#FBF8F2;border:1px solid #CFC6B4;padding:13px;font-size:15px;outline:none;width:100%;box-sizing:border-box"></label>
+            </sc-if>
+            <label style="display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#6E6A60">{{ tx.acctEmail }}<input type="email" value="{{ afEmail }}" sc-camel-on-change="{{ setAfEmail }}" style="background:#FBF8F2;border:1px solid #CFC6B4;padding:13px;font-size:15px;outline:none;width:100%;box-sizing:border-box"></label>
+            <label style="display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#6E6A60">{{ tx.acctPass }}<input type="password" value="{{ afPass }}" sc-camel-on-change="{{ setAfPass }}" style="background:#FBF8F2;border:1px solid #CFC6B4;padding:13px;font-size:15px;outline:none;width:100%;box-sizing:border-box"></label>
+            <sc-if value="{{ hasAuthErr }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:13px;color:#9A3B2E">{{ authErr }}</span>
+            </sc-if>
+            <span sc-camel-on-click="{{ doAuth }}" style="cursor:pointer;text-align:center;background:#1C2640;color:#F4EFE6;padding:15px 28px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase">{{ authBtn }}</span>
+            <span style="font-size:14px;color:#6E6A60">{{ authHint }} <span sc-camel-on-click="{{ switchAuth }}" style="cursor:pointer;color:#1C2640;text-decoration:underline;text-underline-offset:3px">{{ authSwitch }}</span></span>
+            <span style="font-size:13px;line-height:1.6;color:#6E6A60">{{ tx.acctNote }}</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:1px solid #DCD3C2;padding-bottom:20px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:46px">{{ tx.acctHello }}, {{ acctName }}</h1>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#6E6A60">{{ acctEmail }}</span>
+            </div>
+            <span sc-camel-on-click="{{ logout }}" style="cursor:pointer;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;border-bottom:1px solid #1C2640;padding-bottom:3px">{{ tx.acctLogout }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:28px">{{ tx.acctAddrH }}</h2>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px">
+              <sc-for list="{{ fields }}" as="f" hint-placeholder-count="7">
+                <label style="grid-column:{{ f.span }};display:flex;flex-direction:column;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;color:#6E6A60">{{ f.label }}<input value="{{ f.val }}" sc-camel-on-change="{{ f.set }}" style="background:#FBF8F2;border:1px solid #CFC6B4;padding:13px;font-size:15px;outline:none;width:100%;box-sizing:border-box"></label>
+              </sc-for>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px">
+              <span sc-camel-on-click="{{ saveAddr }}" style="cursor:pointer;background:#1C2640;color:#F4EFE6;padding:13px 24px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase">{{ tx.acctSave }}</span>
+              <sc-if value="{{ addrSaved }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:13px;color:#1F7A4D">{{ tx.acctSaved }}</span>
+              </sc-if>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;border-top:1px solid #DCD3C2;padding-top:28px">
+            <h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:28px">{{ tx.acctNewsH }}</h2>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+              <span style="font-size:15px;color:#3A3A36">{{ newsState }}</span>
+              <span sc-camel-on-click="{{ toggleNews }}" style="cursor:pointer;border:1px solid #1C2640;padding:10px 18px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase">{{ newsBtn }}</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;border-top:1px solid #DCD3C2;padding-top:28px">
+            <h2 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:28px">{{ tx.acctOrdersH }}</h2>
+            <sc-if value="{{ noOrders }}" hint-placeholder-val="{{ true }}">
+              <span style="font-size:15px;color:#6E6A60">{{ tx.acctNone }}</span>
+            </sc-if>
+            <sc-for list="{{ orders }}" as="o" hint-placeholder-count="2">
+              <div style="background:#FBF8F2;border:1px solid #DCD3C2;padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:12px"><span>{{ o.nr }} · {{ o.date }}</span><span>{{ o.total }}</span></div>
+                <sc-for list="{{ o.items }}" as="i" hint-placeholder-count="2">
+                  <span style="font-size:14px;color:#3A3A36">{{ i.line }}</span>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </section>
+    </sc-if>
+
     <sc-if value="{{ isLegal }}" hint-placeholder-val="{{ false }}">
       <section data-screen-label="Legal" style="max-width:820px;margin:0 auto;padding:56px 32px 0;display:flex;flex-direction:column;gap:28px">
         <h1 style="margin:0;font-family:'Libre Caslon Display',serif;font-weight:400;font-size:46px">{{ legalTitle }}</h1>
@@ -540,7 +612,7 @@ input,textarea,select,button{font:inherit;color:inherit}
 </x-dc>
 <script type="text/x-dc" data-dc-script="">
 class Component extends DCLogic {
-  state = { route: 'home', lang: 'de', D: null, cart: {}, sel: {}, faq: -1, news: false, sent: false, order: null, toast: '', scrolled: false, drawer: false, menu: false, narrow: false, pid: 'rheinblau', hov: null, acc: 0 };
+  state = { route: 'home', lang: 'de', D: null, cart: {}, sel: {}, faq: -1, news: false, sent: false, order: null, toast: '', scrolled: false, drawer: false, menu: false, narrow: false, pid: 'rheinblau', hov: null, acc: 0, acct: null, authMode: 'login', af: { name: '', email: '', pass: '' }, authErr: '', addr: {}, addrSaved: false };
   componentWillUnmount() { window.removeEventListener('scroll', this.onScroll); window.removeEventListener('resize', this.onResize); }
 
   async componentDidMount() {
@@ -549,14 +621,31 @@ class Component extends DCLogic {
       this.onScroll = () => { const sc = window.scrollY > 60; if (sc !== this.state.scrolled) this.setState({ scrolled: sc }); };
       this.onResize = () => { const n = window.innerWidth < 1140; if (n !== this.state.narrow) this.setState({ narrow: n }); };
       window.addEventListener('scroll', this.onScroll, { passive: true }); window.addEventListener('resize', this.onResize); this.onScroll(); this.onResize();
-      const routes = ['home', 'shop', 'company', 'contact', 'checkout', 'product', 'agb', 'imp'];
+      const routes = ['home', 'shop', 'company', 'contact', 'checkout', 'product', 'agb', 'imp', 'account'];
       if (s && s.pid) this.setState({ pid: s.pid });
       if (s) this.setState({ route: routes.includes(s.route) ? s.route : 'home', lang: ['de', 'en', 'nl'].includes(s.lang) ? s.lang : 'de',
         cart: s.cart && typeof s.cart === 'object' && !Array.isArray(s.cart) ? s.cart : {} });
     } catch (e) {}
     const src = (window.__resources && window.__resources.acordData) || './acord-data.json';
     try { const D = await (await fetch(src)).json(); this.setState({ D }); } catch (e) {}
+    try { const em = localStorage.getItem('acord-session'), a = this.accounts()[em]; if (a) this.setState({ acct: a, addr: a.addr || {} }); } catch (e) {}
   }
+  accounts() { try { return JSON.parse(localStorage.getItem('acord-accounts') || '{}'); } catch (e) { return {}; } }
+  saveAccount(a) { const all = this.accounts(); all[a.email] = a; try { localStorage.setItem('acord-accounts', JSON.stringify(all)); localStorage.setItem('acord-session', a.email); } catch (e) {} this.setState({ acct: a, addr: a.addr || {} }); }
+  async hash(pw) { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('acord:' + pw)); return Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, '0')).join(''); }
+  async auth(t) {
+    const { authMode, af } = this.state, email = (af.email || '').trim().toLowerCase(), name = (af.name || '').trim(), pw = af.pass || '';
+    if (!email || !pw || (authMode === 'register' && !name)) return this.setState({ authErr: t('acct.errFields') });
+    if (authMode === 'register' && pw.length < 6) return this.setState({ authErr: t('acct.errPass') });
+    const all = this.accounts(), h = await this.hash(pw);
+    if (authMode === 'register') { if (all[email]) return this.setState({ authErr: t('acct.errExists') }); this.saveAccount({ name, email, hash: h, addr: { first: name.split(' ')[0] || '', last: name.split(' ').slice(1).join(' '), email }, news: false, orders: [] }); }
+    else { const a = all[email]; if (!a || a.hash !== h) return this.setState({ authErr: t('acct.errCreds') }); this.saveAccount(a); }
+    this.setState({ authErr: '', af: { name: '', email: '', pass: '' } }); window.scrollTo(0, 0);
+  }
+  logout() { try { localStorage.removeItem('acord-session'); } catch (e) {} this.setState({ acct: null, addr: {}, addrSaved: false }); }
+  saveAddr() { const a = this.state.acct; if (!a) return; this.saveAccount({ ...a, addr: { ...this.state.addr } }); this.setState({ addrSaved: true }); setTimeout(() => this.setState({ addrSaved: false }), 2500); }
+  toggleNews() { const a = this.state.acct; if (!a) return; this.saveAccount({ ...a, news: !a.news }); }
+  recordOrder(nr, lines, total) { const a = this.state.acct; if (!a) return; const o = { nr, date: new Date().toISOString().slice(0, 10), total, items: lines.map(l => ({ name: l.name, meta: l.meta, qty: l.qty })) }; this.saveAccount({ ...a, addr: { ...this.state.addr }, orders: [o, ...(a.orders || [])] }); }
   componentDidUpdate() {
     const { route, lang, cart } = this.state;
     try { localStorage.setItem('acord-v3', JSON.stringify({ route: route === 'ok' ? 'home' : route, lang, cart, pid: this.state.pid })); } catch (e) {}
@@ -572,7 +661,7 @@ class Component extends DCLogic {
     const nm = p => p.n[lang] || p.n.de;
     const pimg = (p, b) => R((b && b !== 'none' && p[b]) || p.img);
     const addKey = key => this.setState(st => ({ cart: { ...st.cart, [key]: (st.cart[key] || 0) + 1 }, toast: t('toast.add'), drawer: true }));
-    const tx = { heroP: t('hero.p'), cta: t('cta.shop'), sold: t('p.sold'), sub: t('p.sub'), beads: t('b.l'), crewK: t('crew.k'), crewQ: t('crew.q'), faqH: t('faq.h'), newsH: t('news.h'), newsPh: t('news.ph'),
+    const tx = { acctTitle: t('acct.title'), acctLogin: t('acct.login'), acctRegister: t('acct.register'), acctName: t('acct.name'), acctEmail: t('acct.email'), acctPass: t('acct.pass'), acctHello: t('acct.hello'), acctLogout: t('acct.logout'), acctAddrH: t('acct.addrH'), acctSave: t('acct.save'), acctSaved: t('acct.saved'), acctNewsH: t('acct.newsH'), acctOrdersH: t('acct.ordersH'), acctNone: t('acct.none'), acctNote: t('acct.note'), heroP: t('hero.p'), cta: t('cta.shop'), sold: t('p.sold'), sub: t('p.sub'), beads: t('b.l'), crewK: t('crew.k'), crewQ: t('crew.q'), faqH: t('faq.h'), newsH: t('news.h'), newsPh: t('news.ph'),
       agb: t('foot.agb'), imp: t('foot.imp'), coK: t('co.k'), coH: t('co.h'), co1: t('co.p1'), co2: t('co.p2'), co3: t('co.p3'), cH: t('c.h'), cSub: t('c.sub'), cShip: t('c.ship'), cTotal: t('c.total'), cGo: t('c.go'), cEmpty: t('c.empty'), cRm: t('c.rm'),
       ckH: t('co2.h'), ckSteps: t('co2.steps'), legal: t('f.legal'), ppNote: t('pp.note'), okH: t('ok.h'), okP: t('ok.p'), okNr: t('ok.nr'), okBack: t('ok.back') };
     const [hero1, hero2] = (t('hero.h') || '').split('<br>');
@@ -604,13 +693,23 @@ class Component extends DCLogic {
       faq: (t('faq') || []).map(([q, a], i) => ({ q, a, open: s.faq === i, sign: s.faq === i ? '−' : '+', toggle: () => this.setState(st => ({ faq: st.faq === i ? -1 : i })) })),
       newsLine: s.news ? t('news.ok') : t('news.p'), joinNews: () => this.setState({ news: true }),
       facts: [['550', 'co.f1'], ['14–22 cm', 'co.f2'], ['100 %', 'co.f3']].map(([b, k]) => ({ b, text: t(k) })),
-      fields: [['first', 'f.first', 1], ['last', 'f.last', 1], ['email', 'f.email', 2], ['street', 'f.street', 2], ['zip', 'f.zip', 1], ['city', 'f.city', 1], ['country', 'f.country', 2]].map(([n, k, w]) => ({ n, label: t(k), span: w === 2 ? '1 / -1' : 'auto' })),
+      fields: [['first', 'f.first', 1], ['last', 'f.last', 1], ['email', 'f.email', 2], ['street', 'f.street', 2], ['zip', 'f.zip', 1], ['city', 'f.city', 1], ['country', 'f.country', 2]].map(([n, k, w]) => ({ n, label: t(k), span: w === 2 ? '1 / -1' : 'auto', val: s.addr[n] || '', set: e => { const v = e.target.value; this.setState(st => ({ addr: { ...st.addr, [n]: v } })); } })),
       lines, cartEmpty: lines.length === 0, cartFull: lines.length > 0,
       subStr: eur(sub), shipStr: ship === 0 && lines.length ? t('c.free') : eur(ship), totalStr: eur(sub + ship),
       hint: free ? t('c.hintok') : (t('c.hint') || '').replace('{x}', eur(Math.max(0, (D ? D.FREE_SHIPPING_FROM : 60) - sub))),
-      placeOrder: () => this.setState({ route: 'ok', cart: {}, order: 'AC-' + Math.floor(100000 + Math.random() * 900000) }),
+      placeOrder: () => { const nr = 'AC-' + Math.floor(100000 + Math.random() * 900000); this.recordOrder(nr, lines, eur(sub + ship)); this.setState({ route: 'ok', cart: {}, order: nr }); },
       orderNr: s.order || '', sent: s.sent, notSent: !s.sent, send: () => this.setState({ sent: true }),
       toast: s.toast, hasToast: !!s.toast,
+      isAccount: s.route === 'account', goAccount: () => this.go('account'), acctLine: s.route === 'account' ? 'currentColor' : 'transparent',
+      loggedIn: !!s.acct, loggedOut: !s.acct, isLogin: s.authMode === 'login', isRegister: s.authMode === 'register',
+      setLogin: () => this.setState({ authMode: 'login', authErr: '' }), setRegister: () => this.setState({ authMode: 'register', authErr: '' }),
+      authTabs: [['login', 'acct.login'], ['register', 'acct.register']].map(([m, k]) => ({ label: t(k), line: s.authMode === m ? '#1C2640' : 'transparent', op: s.authMode === m ? 1 : 0.5, pick: () => this.setState({ authMode: m, authErr: '' }) })),
+      afName: s.af.name, afEmail: s.af.email, afPass: s.af.pass, setAfName: e => { const v = e.target.value; this.setState(st => ({ af: { ...st.af, name: v } })); }, setAfEmail: e => { const v = e.target.value; this.setState(st => ({ af: { ...st.af, email: v } })); }, setAfPass: e => { const v = e.target.value; this.setState(st => ({ af: { ...st.af, pass: v } })); },
+      doAuth: () => this.auth(t), authBtn: s.authMode === 'login' ? t('acct.login') : t('acct.register'), authErr: s.authErr, hasAuthErr: !!s.authErr, authHint: s.authMode === 'login' ? t('acct.hintLogin') : t('acct.hintReg'), authSwitch: s.authMode === 'login' ? t('acct.register') : t('acct.login'), switchAuth: () => this.setState(st => ({ authMode: st.authMode === 'login' ? 'register' : 'login', authErr: '' })),
+      acctName: s.acct ? s.acct.name : '', acctEmail: s.acct ? s.acct.email : '', logout: () => this.logout(), saveAddr: () => this.saveAddr(), addrSaved: s.addrSaved,
+      newsState: s.acct && s.acct.news ? t('acct.newsOn') : t('acct.newsOff'), newsBtn: s.acct && s.acct.news ? t('acct.newsBtnOn') : t('acct.newsBtnOff'), toggleNews: () => this.toggleNews(),
+      orders: (s.acct && s.acct.orders || []).map(o => ({ nr: o.nr, date: o.date, total: o.total, items: (o.items || []).map(i => ({ line: i.qty + ' × ' + i.name + (i.meta ? ' · ' + i.meta : '') })) })), noOrders: !(s.acct && s.acct.orders && s.acct.orders.length),
+      ckAcct: s.acct ? t('acct.prefill') : t('acct.loginCk'),
       ...this.extra(t, eur, P, card, sub, D, lines)
     };
   }
